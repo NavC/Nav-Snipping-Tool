@@ -1,6 +1,6 @@
 ﻿namespace Navs_Snipping_Tool
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -30,14 +30,12 @@
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rectangularSnipToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.delayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cancelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.drawToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.rectangularSnipToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -63,6 +61,13 @@
             this.newToolStripMenuItem.Text = "New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
+            // rectangularSnipToolStripMenuItem
+            // 
+            this.rectangularSnipToolStripMenuItem.CheckOnClick = true;
+            this.rectangularSnipToolStripMenuItem.Name = "rectangularSnipToolStripMenuItem";
+            this.rectangularSnipToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.rectangularSnipToolStripMenuItem.Text = "Rectangular Snip";
+            // 
             // delayToolStripMenuItem
             // 
             this.delayToolStripMenuItem.Name = "delayToolStripMenuItem";
@@ -75,50 +80,30 @@
             this.cancelToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
             this.cancelToolStripMenuItem.Text = "Cancel";
             // 
-            // optionsToolStripMenuItem
-            // 
-            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
-            this.optionsToolStripMenuItem.Text = "Options";
-            // 
             // drawToolStripMenuItem
             // 
             this.drawToolStripMenuItem.Name = "drawToolStripMenuItem";
             this.drawToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             this.drawToolStripMenuItem.Text = "Draw";
             // 
-            // rectangularSnipToolStripMenuItem
+            // optionsToolStripMenuItem
             // 
-            this.rectangularSnipToolStripMenuItem.CheckOnClick = true;
-            this.rectangularSnipToolStripMenuItem.Name = "rectangularSnipToolStripMenuItem";
-            this.rectangularSnipToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
-            this.rectangularSnipToolStripMenuItem.Text = "Rectangular Snip";
+            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.optionsToolStripMenuItem.Text = "Options";
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackColor = System.Drawing.SystemColors.ButtonShadow;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 27);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(105, 81);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
-            // 
-            // Form1
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(335, 139);
-            this.Controls.Add(this.pictureBox1);
+            this.ClientSize = new System.Drawing.Size(335, 76);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
-            this.Name = "Form1";
+            this.Name = "MainForm";
             this.Text = "Navs Snipping Tool";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -133,7 +118,6 @@
         private System.Windows.Forms.ToolStripMenuItem drawToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem rectangularSnipToolStripMenuItem;
-        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 
