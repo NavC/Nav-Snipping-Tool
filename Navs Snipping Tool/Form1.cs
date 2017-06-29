@@ -73,5 +73,24 @@ namespace Navs_Snipping_Tool
             //Cross Cursor
             Cursor = Cursors.Cross;
         }
+
+        private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
+        {
+            //validate if there is an image
+            if (pictureBox1.Image == null)
+                return;
+            //validate if right-click was trigger
+            if (start)
+            {
+                //refresh picture box
+                pictureBox1.Refresh();
+                //set corner square to mouse coordinates
+                selectWidth = e.X - selectX;
+                selectHeight = e.Y - selectY;
+                //draw dotted rectangle
+                pictureBox1.CreateGraphics().DrawRectangle(selectPen,
+                          selectX, selectY, selectWidth, selectHeight);
+            }
+        }
     }
 }
