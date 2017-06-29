@@ -34,7 +34,8 @@ namespace Navs_Snipping_Tool
         private bool start = false;
         private void SnippingForm_Load(object sender, EventArgs e)
         {
-
+            GetScreenSize();
+            SnipImage();
         }
 
         private void GetScreenSize()
@@ -56,15 +57,20 @@ namespace Navs_Snipping_Tool
             this.Location = new Point(-6, 0);
             this.Width = displayWidth + 6;
             this.Height = displayHeight;
+
+            pictureBox1.Size = new Size(displayWidth, displayHeight);
         }
+
+
+
 
         void SnipImage()
         {
             //Hide the Form
             this.Hide();
             //Create the Bitmap
-            Bitmap printscreen = new Bitmap(Screen.PrimaryScreen.Bounds.Width,
-                                     Screen.PrimaryScreen.Bounds.Height);
+            Bitmap printscreen = new Bitmap(displayWidth,
+                                     displayHeight);
             //Create the Graphic Variable with screen Dimensions
             Graphics graphics = Graphics.FromImage(printscreen as Image);
             //Copy Image from the screen
