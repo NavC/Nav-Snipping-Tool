@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Navs_Snipping_Tool;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -20,22 +21,27 @@ namespace Navs_Snipping_Tool
             InitializeComponent();
         }
 
-        //These variables control the mouse position
-        private int selectX;
-        private int selectY;
-        private int selectWidth;
-        private int selectHeight;
+
         public Pen selectPen;
 
         private int displayWidth;
         private int displayHeight;
 
+
+
+        //Draw rectangle
+        Point startPos;      // mouse-down position
+        Point currentPos;    // current mouse position
+        bool drawing;        // busy drawing
+        List<Rectangle> rectangles = new List<Rectangle>();  // previous rectangles
+
         //This variable control when you start the right click
-        private bool start = false;
+
         private void SnippingForm_Load(object sender, EventArgs e)
         {
             GetScreenSize();
             SnipImage();
+
         }
 
         private void GetScreenSize()
@@ -92,85 +98,75 @@ namespace Navs_Snipping_Tool
 
         private void SaveToClipboard()
         {
-            //validate if something selected
-            if (selectWidth > 0)
-            {
 
-                Rectangle rect = new Rectangle(selectX, selectY, selectWidth, selectHeight);
-                //create bitmap with original dimensions
-                Bitmap OriginalImage = new Bitmap(pictureBox1.Image, pictureBox1.Width, pictureBox1.Height);
-                //create bitmap with selected dimensions
-                Bitmap _img = new Bitmap(selectWidth, selectHeight);
-                //create graphic variable
-                Graphics g = Graphics.FromImage(_img);
-                //set graphic attributes
-                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
-                g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-                g.DrawImage(OriginalImage, 0, 0, rect, GraphicsUnit.Pixel);
-                //insert image stream into clipboard
-                Clipboard.SetImage(_img);
-            }
             //End application
             Application.Exit();
         }
 
+        private Rectangle getRectangle()
+        {
+            return new Rectangle(
+                Math.Min(startPos.X, currentPos.X),
+                Math.Min(startPos.Y, currentPos.Y),
+                Math.Abs(startPos.X - currentPos.X),
+                Math.Abs(startPos.Y - currentPos.Y)
+                );
+        }
+
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
-            //validate when user right-click
-            if (!start)
-            {
-                if (e.Button == System.Windows.Forms.MouseButtons.Left)
-                {
-                    //starts coordinates for rectangle
-                    selectX = e.X;
-                    selectY = e.Y;
-                    selectPen = new Pen(Color.Red, 1);
-                    selectPen.DashStyle = DashStyle.DashDotDot;
-                }
-                //refresh picture box
-                pictureBox1.Refresh();
-                //start control variable for draw rectangle
-                start = true;
-            }
-            else
-            {
-                //validate if there is image
-                if (pictureBox1.Image == null)
-                    return;
-                //same functionality when mouse is over
-                if (e.Button == System.Windows.Forms.MouseButtons.Left)
-                {
-                    pictureBox1.Refresh();
-                    selectWidth = e.X - selectX;
-                    selectHeight = e.Y - selectY;
-                    pictureBox1.CreateGraphics().DrawRectangle(selectPen, selectX,
-                             selectY, selectWidth, selectHeight);
-
-                }
-                start = false;
-                //function save image to clipboard
-                SaveToClipboard();
-            }
+            currentPos = startPos = e.Location;
+            drawing = true;
         }
 
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
-            //validate if there is an image
-            if (pictureBox1.Image == null)
-                return;
-            //validate if right-click was trigger
-            if (start)
+            currentPos = e.Location;
+            if (drawing) pictureBox1.Invalidate();
+        }
+
+        private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (drawing)
             {
-                //refresh picture box
-                pictureBox1.Refresh();
-                //set corner square to mouse coordinates
-                selectWidth = e.X - selectX;
-                selectHeight = e.Y - selectY;
-                //draw dotted rectangle
-                pictureBox1.CreateGraphics().DrawRectangle(selectPen,
-                          selectX, selectY, selectWidth, selectHeight);
+                drawing = false;
+                var rc = getRectangle();
+                if (rc.Width > 0 && rc.Height > 0) rectangles.Add(rc);
+                pictureBox1.Invalidate();
+
+                Console.WriteLine("Width: " + rc.Width + " Height: " + rc.Height);
+
+                CopyToClipboard(rc);
             }
+
+            this.Close();
+            
+        }
+
+        // Copy the selected area to the clipboard.
+        private void CopyToClipboard(Rectangle src_rect)
+        {
+            // Make a bitmap for the selected area's image.
+            Bitmap bm = new Bitmap(src_rect.Width, src_rect.Height);
+
+            // Copy the selected area into the bitmap.
+            using (Graphics gr = Graphics.FromImage(bm))
+            {
+                Rectangle dest_rect =
+                    new Rectangle(0, 0, src_rect.Width, src_rect.Height);
+                gr.DrawImage(pictureBox1.Image, dest_rect, src_rect,
+                    GraphicsUnit.Pixel);
+            }
+
+            // Copy the selection image to the clipboard.
+            Clipboard.SetImage(bm);
+        }
+
+
+        private void pictureBox1_Paint(object sender, PaintEventArgs e)
+        {
+            if (rectangles.Count > 0) e.Graphics.DrawRectangles(Pens.Black, rectangles.ToArray());
+            if (drawing) e.Graphics.DrawRectangle(Pens.Red, getRectangle());
         }
     }
 }
