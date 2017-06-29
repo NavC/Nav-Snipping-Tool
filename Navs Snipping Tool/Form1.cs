@@ -16,5 +16,18 @@ namespace Navs_Snipping_Tool
         {
             InitializeComponent();
         }
+
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RectangleSnip();
+        }
+
+        private void RectangleSnip()
+        {
+            if (rectangularSnipToolStripMenuItem.Checked == true)
+            {
+
+            }
+        }
     }
 }
